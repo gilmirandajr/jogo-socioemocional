@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoções em Jogo - Educação Socioemocional</title>
+    <style>
+        :root {
+            --primary-color: #4A6FA5;
+            --secondary-color: #6B8E23;
+            --accent-color: #FF6B6B;
+            --light-color: #F8F9FA;
+            --dark-color: #343A40;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        nav a:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 40px 0;
+            min-height: calc(100vh - 180px);
+        }
+        
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        .welcome-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .welcome-section p {
+            max-width: 800px;
+            margin: 0 auto 20px;
+        }
+        
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .activity-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .activity-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .activity-icon {
+            height: 150px;
+            background-color: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 3rem;
+        }
+        
+        .activity-content {
+            padding: 20px;
+        }
+        
+        .activity-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            text-decoration: none;
+            margin-top: 15px;
+        }
+        
+        .btn:hover {
+            background-color: #5a7a1a;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            margin: 15px 0;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 10px;
+            padding: 30px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-color);
+        }
+        
+        /* Activity-specific styles */
+        #calendar-section {
+            display: none;
+        }
+        
+        .calendar-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+        
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            background-color: #f0f0f0;
+        }
+        
+        .calendar-day:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .calendar-day.selected {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .emotion-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .emotion-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .emotion-option:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .emotion-option.selected {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .emotion-icon {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        #meditation-section {
+            display: none;
+        }
+        
+        .meditation-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .meditation-audio {
+            width: 100%;
+            margin: 20px 0;
+        }
+        
+        .breathing-exercise {
+            margin-top: 30px;
+        }
+        
+        .breathing-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+            transition: transform 4s ease-in-out;
+        }
+        
+        #listening-section {
+            display: none;
+        }
+        
+        .listening-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .scenario-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        .response-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        .response-option {
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .response-option:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .response-option.correct {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .response-option.incorrect {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .feedback.incorrect {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .activities-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .emotion-selector {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <span class="logo-icon">😊</span>
+                <h1>Emoções em Jogo</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" id="home-link">Início</a></li>
+                    <li><a href="#" id="calendar-link">Calendário Emocional</a></li>
+                    <li><a href="#" id="meditation-link">Meditação Guiada</a></li>
+                    <li><a href="#" id="listening-link">Ouça os Sentimentos</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <!-- Home Section -->
+            <section id="home-section">
+                <div class="welcome-section">
+                    <h2>Bem-vindo ao Emoções em Jogo!</h2>
+                    <p>Este jogo educacional foi desenvolvido para ajudar crianças e adolescentes a reconhecer, nomear e expressar suas emoções, promovendo o desenvolvimento da autorregulação emocional e da empatia.</p>
+                    <p>Explore as atividades abaixo para começar sua jornada de autoconhecimento!</p>
+                </div>
+                
+                <div class="activities-grid">
+                    <div class="activity-card" id="calendar-card">
+                        <div class="activity-icon">📅</div>
+                        <div class="activity-content">
+                            <h3>Calendário Emocional</h3>
+                            <p>Registre suas emoções diárias e acompanhe seu estado emocional ao longo do tempo.</p>
+                            <button class="btn" id="start-calendar">Começar</button>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card" id="meditation-card">
+                        <div class="activity-icon">🧘</div>
+                        <div class="activity-content">
+                            <h3>Meditação Guiada</h3>
+                            <p>Pratique exercícios de respiração e meditação para desenvolver autocontrole e bem-estar.</p>
+                            <button class="btn" id="start-meditation">Começar</button>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card" id="listening-card">
+                        <div class="activity-icon">👂</div>
+                        <div class="activity-content">
+                            <h3>Ouça os Sentimentos</h3>
+                            <p>Desenvolva empatia e escuta ativa respondendo a situações emocionais de personagens.</p>
+                            <button class="btn" id="start-listening">Começar</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Calendar Section -->
+            <section id="calendar-section">
+                <div class="calendar-container">
+                    <h2>Calendário Emocional</h2>
+                    <p>Selecione um dia e registre como você está se sentindo.</p>
+                    
+                    <div class="calendar-header">
+                        <button class="btn" id="prev-month">← Mês Anterior</button>
+                        <h3 id="current-month">Março 2023</h3>
+                        <button class="btn" id="next-month">Próximo Mês →</button>
+                    </div>
+                    
+                    <div class="calendar-grid" id="calendar-days">
+                        <!-- Calendar days will be generated by JavaScript -->
+                    </div>
+                    
+                    <div class="emotion-selector" id="emotion-selector">
+                        <div class="emotion-option" data-emotion="feliz">
+                            <span class="emotion-icon">😊</span>
+                            <span>Feliz</span>
+                        </div>
+                        <div class="emotion-option" data-emotion="triste">
+                            <span class="emotion-icon">😢</span>
+                            <span>Triste</span>
+                        </div>
+                        <div class="emotion-option" data-emotion="irritado">
+                            <span class="emotion-icon">😠</span>
+                            <span>Irritado</span>
+                        </div>
+                        <div class="emotion-option" data-emotion="ansioso">
+                            <span class="emotion-icon">😰</span>
+                            <span>Ansioso</span>
+                        </div>
+                        <div class="emotion-option" data-emotion="calmo">
+                            <span class="emotion-icon">😌</span>
+                            <span>Calmo</span>
+                        </div>
+                        <div class="emotion-option" data-emotion="entediado">
+                            <span class="emotion-icon">😑</span>
+                            <span>Entediado</span>
+                        </div>
+                        <div class="emotion-option" data-emotion="surpreso">
+                            <span class="emotion-icon">😲</span>
+                            <span>Surpreso</span>
+                        </div>
+                        <div class="emotion-option" data-emotion="confiante">
+                            <span class="emotion-icon">😎</span>
+                            <span>Confiante</span>
+                        </div>
+                    </div>
+                    
+                    <button class="btn" id="save-emotion" style="margin-top: 20px;">Salvar Emoção</button>
+                </div>
+            </section>
+            
+            <!-- Meditation Section -->
+            <section id="meditation-section">
+                <div class="meditation-container">
+                    <h2>Meditação Guiada</h2>
+                    <p>Encontre um lugar tranquilo e reserve alguns minutos para esta prática de atenção plena.</p>
+                    
+                    <div class="meditation-audio">
+                        <audio controls style="width: 100%;">
+                            <source src="#" type="audio/mpeg">
+                            Seu navegador não suporta o elemento de áudio.
+                        </audio>
+                        <p style="margin-top: 10px; font-size: 0.9rem; color: #666;">Áudio de meditação guiada (1-3 minutos)</p>
+                    </div>
+                    
+                    <div class="breathing-exercise">
+                        <h3>Exercício de Respiração</h3>
+                        <p>Clique em "Iniciar" e siga as instruções para praticar a respiração consciente.</p>
+                        <div class="breathing-circle" id="breathing-circle">
+                            Inspire
+                        </div>
+                        <button class="btn" id="start-breathing">Iniciar Exercício</button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Listening Section -->
+            <section id="listening-section">
+                <div class="listening-container">
+                    <h2>Ouça os Sentimentos</h2>
+                    <p>Leia as situações abaixo e escolha a resposta que demonstra mais empatia e compreensão.</p>
+                    
+                    <div class="scenario-card" id="scenario-1">
+                        <h3>Situação 1</h3>
+                        <p>João chegou na escola hoje muito quieto. Ele não quis brincar com os amigos no recreio e ficou sozinho no canto do pátio.</p>
+                        
+                        <div class="response-options">
+                            <div class="response-option" data-correct="false">"Por que você está sendo tão antissocial hoje?"</div>
+                            <div class="response-option" data-correct="true">"Parece que você está um pouco quieto hoje. Quer conversar sobre algo?"</div>
+                            <div class="response-option" data-correct="false">"Vamos brincar, não fique aí parado!"</div>
+                            <div class="response-option" data-correct="false">"Ele sempre é assim, não se preocupe."</div>
+                        </div>
+                        
+                        <div class="feedback correct">
+                            <strong>Resposta Correta!</strong> Esta resposta demonstra empatia ao reconhecer o estado emocional de João e oferecer suporte sem pressioná-lo.
+                        </div>
+                        
+                        <div class="feedback incorrect">
+                            <strong>Resposta Incorreta.</strong> Tente novamente, pensando em como você gostaria que falassem com você se estivesse se sentindo assim.
+                        </div>
+                    </div>
+                    
+                    <div class="scenario-card" id="scenario-2" style="display: none;">
+                        <h3>Situação 2</h3>
+                        <p>Maria errou uma questão importante na prova e está visivelmente chateada. Ela está com os olhos marejados e evita contato visual.</p>
+                        
+                        <div class="response-options">
+                            <div class="response-option" data-correct="false">"Não é para tanto, é só uma prova!"</div>
+                            <div class="response-option" data-correct="false">"Você devia ter estudado mais."</div>
+                            <div class="response-option" data-correct="true">"Sei como é se esforçar e não conseguir o resultado esperado. Quer falar sobre isso?"</div>
+                            <div class="response-option" data-correct="false">"Pelo menos você passou, isso é o que importa."</div>
+                        </div>
+                        
+                        <div class="feedback correct">
+                            <strong>Resposta Correta!</strong> Esta resposta valida os sentimentos de Maria e oferece apoio emocional.
+                        </div>
+                        
+                        <div class="feedback incorrect">
+                            <strong>Resposta Incorreta.</strong> Tente novamente, pensando em como validar os sentimentos de Maria sem minimizá-los.
+                        </div>
+                    </div>
+                    
+                    <button class="btn" id="next-scenario" style="display: none;">Próxima Situação</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="logo">
+                <span class="logo-icon">😊</span>
+                <h3>Emoções em Jogo</h3>
+            </div>
+            <p>Desenvolvido com base na metodologia INTERA para educação socioemocional</p>
+            <div class="footer-links">
+                <a href="#" id="about-link">Sobre o Projeto</a>
+                <a href="#" id="references-link">Referências</a>
+                <a href="#" id="download-link">Baixar Jogo</a>
+            </div>
+            <p>&copy; 2023 Grupo 5 - Todos os direitos reservados</p>
+        </div>
+    </footer>
+
+    <!-- About Modal -->
+    <div class="modal" id="about-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-about">&times;</span>
+            <h2>Sobre o Projeto</h2>
+            <p>Este jogo educacional foi desenvolvido como parte do projeto final da disciplina, seguindo a metodologia INTERA.</p>
+            <p><strong>Objetivo:</strong> Auxiliar crianças e adolescentes a reconhecer, nomear e expressar suas emoções, promovendo o desenvolvimento da autorregulação emocional e da empatia.</p>
+            <p><strong>Público-alvo:</strong> Crianças e adolescentes de 8 a 15 anos, alunos do Ensino Fundamental I e II.</p>
+            <p><strong>Teorias de Aprendizagem:</strong> Construtivismo (Piaget), Sociointeracionismo (Vygotsky), Aprendizagem Socioemocional (CASEL) e Psicanálise (Freud).</p>
+        </div>
+    </div>
+
+    <!-- References Modal -->
+    <div class="modal" id="references-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-references">&times;</span>
+            <h2>Referências Bibliográficas</h2>
+            <ul style="list-style-type: none; padding-left: 0;">
+                <li style="margin-bottom: 10px;">ABED, A. L. Z. O desenvolvimento das habilidades socioemocionais como caminho para a aprendizagem e o sucesso escolar de alunos da educação básica.</li>
+                <li style="margin-bottom: 10px;">CASEL. Safe and Sound: An educational leader's guide to evidence based social and emotional learning (SEL) programs.</li>
+                <li style="margin-bottom: 10px;">FREITAS, B. I.; MARIN, A. H. Aprendizagem socioemocional e atenção plena no contexto escolar brasileiro.</li>
+                <li style="margin-bottom: 10px;">HUIZINGA, J. Homo Ludens: o jogo como elemento da cultura.</li>
+                <li style="margin-bottom: 10px;">KISHIMOTO, T. M. Jogo, brinquedo, brincadeira e a educação.</li>
+                <li style="margin-bottom: 10px;">PIAGET, J. Seis estudos de Psicologia.</li>
+                <li style="margin-bottom: 10px;">VIGOTSKI, L. S. A formação social da mente.</li>
+                <li style="margin-bottom: 10px;">FREUD, Sigmund. Sobre a psicanálise.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Navigation
+        document.getElementById('home-link').addEventListener('click', () => showSection('home-section'));
+        document.getElementById('calendar-link').addEventListener('click', () => showSection('calendar-section'));
+        document.getElementById('meditation-link').addEventListener('click', () => showSection('meditation-section'));
+        document.getElementById('listening-link').addEventListener('click', () => showSection('listening-section'));
+        
+        document.getElementById('calendar-card').addEventListener('click', () => showSection('calendar-section'));
+        document.getElementById('meditation-card').addEventListener('click', () => showSection('meditation-section'));
+        document.getElementById('listening-card').addEventListener('click', () => showSection('listening-section'));
+        
+        document.getElementById('start-calendar').addEventListener('click', () => showSection('calendar-section'));
+        document.getElementById('start-meditation').addEventListener('click', () => showSection('meditation-section'));
+        document.getElementById('start-listening').addEventListener('click', () => showSection('listening-section'));
+        
+        function showSection(sectionId) {
+            // Hide all sections
+            document.getElementById('home-section').style.display = 'none';
+            document.getElementById('calendar-section').style.display = 'none';
+            document.getElementById('meditation-section').style.display = 'none';
+            document.getElementById('listening-section').style.display = 'none';
+            
+            // Show selected section
+            document.getElementById(sectionId).style.display = 'block';
+        }
+        
+        // Calendar functionality
+        let currentDate = new Date();
+        let selectedDate = null;
+        let selectedEmotion = null;
+        
+        function renderCalendar() {
+            const calendarDays = document.getElementById('calendar-days');
+            const currentMonth = document.getElementById('current-month');
+            
+            // Clear previous calendar
+            calendarDays.innerHTML = '';
+            
+            // Set current month text
+            const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+                "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+            ];
+            currentMonth.textContent = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+            
+            // Get first day of month and number of days
+            const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+            const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            
+            // Add empty cells for days before the first day of the month
+            for (let i = 0; i < firstDay.getDay(); i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'calendar-day';
+                calendarDays.appendChild(emptyCell);
+            }
+            
+            // Add days of the month
+            for (let i = 1; i <= daysInMonth; i++) {
+                const dayCell = document.createElement('div');
+                dayCell.className = 'calendar-day';
+                dayCell.textContent = i;
+                dayCell.addEventListener('click', () => selectDate(i, dayCell));
+                
+                // Check if there's saved emotion for this day
+                const dateKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}-${i}`;
+                const savedEmotion = localStorage.getItem(dateKey);
+                if (savedEmotion) {
+                    dayCell.style.backgroundColor = getEmotionColor(savedEmotion);
+                }
+                
+                calendarDays.appendChild(dayCell);
+            }
+        }
+        
+        function selectDate(day, element) {
+            // Remove selection from all days
+            document.querySelectorAll('.calendar-day').forEach(day => {
+                day.classList.remove('selected');
+            });
+            
+            // Add selection to clicked day
+            element.classList.add('selected');
+            
+            selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+            
+            // Load saved emotion for this date if exists
+            const dateKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}-${day}`;
+            const savedEmotion = localStorage.getItem(dateKey);
+            
+            if (savedEmotion) {
+                // Select the emotion in the selector
+                document.querySelectorAll('.emotion-option').forEach(option => {
+                    option.classList.remove('selected');
+                    if (option.dataset.emotion === savedEmotion) {
+                        option.classList.add('selected');
+                        selectedEmotion = savedEmotion;
+                    }
+                });
+            } else {
+                // Reset emotion selection
+                document.querySelectorAll('.emotion-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                selectedEmotion = null;
+            }
+        }
+        
+        function getEmotionColor(emotion) {
+            const emotionColors = {
+                'feliz': '#FFD700',
+                'triste': '#4169E1',
+                'irritado': '#FF4500',
+                'ansioso': '#FF69B4',
+                'calmo': '#32CD32',
+                'entediado': '#A9A9A9',
+                'surpreso': '#FFA500',
+                'confiante': '#8A2BE2'
+            };
+            
+            return emotionColors[emotion] || '#F0F0F0';
+        }
+        
+        // Emotion selection
+        document.querySelectorAll('.emotion-option').forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove selection from all options
+                document.querySelectorAll('.emotion-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Add selection to clicked option
+                option.classList.add('selected');
+                selectedEmotion = option.dataset.emotion;
+            });
+        });
+        
+        // Save emotion
+        document.getElementById('save-emotion').addEventListener('click', () => {
+            if (!selectedDate || !selectedEmotion) {
+                alert('Por favor, selecione uma data e uma emoção.');
+                return;
+            }
+            
+            const dateKey = `${selectedDate.getFullYear()}-${selectedDate.getMonth()}-${selectedDate.getDate()}`;
+            localStorage.setItem(dateKey, selectedEmotion);
+            
+            // Update calendar day color
+            document.querySelectorAll('.calendar-day').forEach(day => {
+                if (parseInt(day.textContent) === selectedDate.getDate()) {
+                    day.style.backgroundColor = getEmotionColor(selectedEmotion);
+                }
+            });
+            
+            alert('Emoção salva com sucesso!');
+        });
+        
+        // Month navigation
+        document.getElementById('prev-month').addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
+        });
+        
+        document.getElementById('next-month').addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        });
+        
+        // Breathing exercise
+        document.getElementById('start-breathing').addEventListener('click', () => {
+            const circle = document.getElementById('breathing-circle');
+            const button = document.getElementById('start-breathing');
+            
+            button.disabled = true;
+            circle.style.transform = 'scale(1.5)';
+            circle.textContent = 'Inspire...';
+            
+            setTimeout(() => {
+                circle.style.transform = 'scale(1)';
+                circle.textContent = 'Segure...';
+                
+                setTimeout(() => {
+                    circle.style.transform = 'scale(0.7)';
+                    circle.textContent = 'Expire...';
+                    
+                    setTimeout(() => {
+                        circle.style.transform = 'scale(1)';
+                        circle.textContent = 'Repita';
+                        button.disabled = false;
+                    }, 4000);
+                }, 2000);
+            }, 4000);
+        });
+        
+        // Listening game
+        let currentScenario = 1;
+        
+        document.querySelectorAll('.response-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const isCorrect = this.dataset.correct === 'true';
+                const scenarioCard = this.closest('.scenario-card');
+                const feedback = scenarioCard.querySelectorAll('.feedback');
+                
+                // Show feedback
+                if (isCorrect) {
+                    feedback[0].style.display = 'block';
+                    feedback[1].style.display = 'none';
+                    
+                    // Show next scenario button after a delay
+                    setTimeout(() => {
+                        document.getElementById('next-scenario').style.display = 'block';
+                    }, 2000);
+                } else {
+                    feedback[0].style.display = 'none';
+                    feedback[1].style.display = 'block';
+                }
+                
+                // Highlight correct/incorrect answers
+                this.closest('.response-options').querySelectorAll('.response-option').forEach(opt => {
+                    if (opt.dataset.correct === 'true') {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                    }
+                    opt.style.pointerEvents = 'none';
+                });
+            });
+        });
+        
+        document.getElementById('next-scenario').addEventListener('click', () => {
+            if (currentScenario === 1) {
+                document.getElementById('scenario-1').style.display = 'none';
+                document.getElementById('scenario-2').style.display = 'block';
+                document.getElementById('next-scenario').style.display = 'none';
+                currentScenario = 2;
+            } else {
+                // Reset game
+                document.getElementById('scenario-1').style.display = 'block';
+                document.getElementById('scenario-2').style.display = 'none';
+                document.getElementById('next-scenario').style.display = 'none';
+                currentScenario = 1;
+                
+                // Reset responses
+                document.querySelectorAll('.response-option').forEach(opt => {
+                    opt.classList.remove('correct', 'incorrect');
+                    opt.style.pointerEvents = 'auto';
+                });
+                
+                document.querySelectorAll('.feedback').forEach(fb => {
+                    fb.style.display = 'none';
+                });
+            }
+        });
+        
+        // Modal functionality
+        document.getElementById('about-link').addEventListener('click', () => {
+            document.getElementById('about-modal').style.display = 'flex';
+        });
+        
+        document.getElementById('references-link').addEventListener('click', () => {
+            document.getElementById('references-modal').style.display = 'flex';
+        });
+        
+        document.getElementById('download-link').addEventListener('click', () => {
+            alert('Para baixar o jogo, salve esta página no seu computador (Ctrl+S) ou entre em contato com os desenvolvedores.');
+        });
+        
+        document.getElementById('close-about').addEventListener('click', () => {
+            document.getElementById('about-modal').style.display = 'none';
+        });
+        
+        document.getElementById('close-references').addEventListener('click', () => {
+            document.getElementById('references-modal').style.display = 'none';
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+        
+        // Initialize calendar
+        renderCalendar();
+    </script>
+</body>
+</html>
